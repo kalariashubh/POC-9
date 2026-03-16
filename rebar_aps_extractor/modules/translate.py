@@ -10,7 +10,6 @@ def start_translation(token, object_id):
     """
     print(f"⚙️  [TRANSLATE] Starting translation job (Revit engine processing)...")
 
-    # URN is base64-encoded object_id (padding stripped)
     urn = base64.b64encode(object_id.encode("utf-8")).decode("utf-8").rstrip("=")
 
     url = f"{BASE_URL}/modelderivative/v2/designdata/job"
@@ -18,7 +17,7 @@ def start_translation(token, object_id):
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
-        "x-ads-force": "true"   # force re-translate if file was already uploaded
+        "x-ads-force": "true"
     }
 
     body = {
