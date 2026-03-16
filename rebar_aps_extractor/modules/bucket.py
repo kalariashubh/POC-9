@@ -18,7 +18,7 @@ def create_bucket(token):
 
     body = {
         "bucketKey": BUCKET_KEY,
-        "policyKey": "transient"   # auto-deletes after 24h
+        "policyKey": "transient"
     }
 
     response = requests.post(url, headers=headers, json=body)
