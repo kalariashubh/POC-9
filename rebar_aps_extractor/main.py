@@ -30,7 +30,6 @@ def main():
     print(f"  Output: {OUTPUT_JSON}")
     print("=" * 60 + "\n")
 
-    # Validate input file exists
     if not os.path.exists(RVT_FILE_PATH):
         print(f"❌ ERROR: .rvt file not found at:\n   {RVT_FILE_PATH}")
         print("   Please update RVT_FILE_PATH in config.py")
