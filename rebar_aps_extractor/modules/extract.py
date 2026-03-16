@@ -184,6 +184,7 @@ def format_all_mm_fields(records):
     Removes unnecessary .000 decimals from all measurement strings.
 
     bar_length is already handled by apply_rounding_to_records.
+    spacing is rounded to nearest whole mm to match Revit schedule display.
     quantity is a count so no formatting needed.
     type is a string so no formatting needed.
     """
@@ -192,13 +193,21 @@ def format_all_mm_fields(records):
         if r.get("bar_diameter") is not None:
             r["bar_diameter"] = format_mm_value(r["bar_diameter"])
 
-        # Format spacing — e.g. '150.000 mm' → '150 mm'
-        #                        '289.882 mm' → '289.882 mm' (kept)
+        # Format spacing — round to nearest whole mm to match Revit schedule
+        # e.g. '280.571 mm' → '281 mm'
+        #      '289.882 mm' → '290 mm'
+        #      '150.000 mm' → '150 mm'  (whole numbers unaffected)
         if r.get("spacing") is not None:
-            r["spacing"] = format_mm_value(r["spacing"])
+            raw = r["spacing"]
+            try:
+                numeric_str = str(raw).replace("mm", "").strip()
+                numeric     = float(numeric_str)
+                rounded     = round(numeric)        # nearest whole mm
+                r["spacing"] = f"{rounded} mm"
+            except (ValueError, TypeError):
+                r["spacing"] = format_mm_value(raw) # fallback to regular format
 
     return records
-
 
 def extract_rebar_records(all_objects):
     """
@@ -311,6 +320,3 @@ def extract_and_save(token, urn):
     print_preview(final_records, count=3)
 
     return final_records
-
-
-
