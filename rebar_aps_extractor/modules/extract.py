@@ -6,10 +6,6 @@ import math
 from collections import defaultdict
 from config import BASE_URL, OUTPUT_JSON
 
-# ─────────────────────────────────────────────────────────────
-# EXACT field mapping based on your model's debug output.
-# Format: "json_output_key": ("exact group name", "exact key name")
-# ─────────────────────────────────────────────────────────────
 EXACT_FIELD_MAP = {
     "type":         ("Identity Data", "Type Name"),
     "bar_length":   ("Dimensions",    "Length of each bar"),
@@ -18,10 +14,7 @@ EXACT_FIELD_MAP = {
     "quantity":     ("Rebar Set",     "Quantity"),
 }
 
-# Revit's rounding increment for scheduled bar lengths (mm)
-# Change this if your Revit project uses a different increment (e.g. 50)
 ROUNDING_INCREMENT_MM = 25
-
 
 def get_model_guid(token, urn):
     print(f"   🔎 Getting model view GUID...")
@@ -106,7 +99,6 @@ def format_mm_value(val):
 
     s = str(val).strip()
 
-    # Split on space to separate number from unit
     parts = s.split()
     if len(parts) == 2:
         number_str = parts[0]
@@ -115,17 +107,14 @@ def format_mm_value(val):
         number_str = parts[0]
         unit       = "mm"
     else:
-        return s  # unexpected format, return as-is
+        return s
 
     try:
         number = float(number_str)
-        # Format float — remove trailing zeros
-        # g format removes trailing zeros automatically
-        # e.g. 200.000 → '200', 289.882 → '289.882', 4665.5 → '4665.5'
         formatted = f"{number:g}"
         return f"{formatted} {unit}"
     except (ValueError, TypeError):
-        return s  # not a number, return as-is
+        return s
 
 
 def clean_value(val):
@@ -171,7 +160,6 @@ def apply_rounding_to_records(records):
             numeric_str = str(val).replace("mm", "").strip()
             numeric     = float(numeric_str)
             rounded     = round_to_nearest(numeric, ROUNDING_INCREMENT_MM)
-            # rounded is always a whole number so no decimals needed
             r["bar_length"] = f"{rounded} mm"
         except (ValueError, TypeError):
             pass
@@ -189,23 +177,18 @@ def format_all_mm_fields(records):
     type is a string so no formatting needed.
     """
     for r in records:
-        # Format bar_diameter — e.g. '12.000 mm' → '12 mm'
         if r.get("bar_diameter") is not None:
             r["bar_diameter"] = format_mm_value(r["bar_diameter"])
 
-        # Format spacing — round to nearest whole mm to match Revit schedule
-        # e.g. '280.571 mm' → '281 mm'
-        #      '289.882 mm' → '290 mm'
-        #      '150.000 mm' → '150 mm'  (whole numbers unaffected)
         if r.get("spacing") is not None:
             raw = r["spacing"]
             try:
                 numeric_str = str(raw).replace("mm", "").strip()
                 numeric     = float(numeric_str)
-                rounded     = round(numeric)        # nearest whole mm
+                rounded     = round(numeric)
                 r["spacing"] = f"{rounded} mm"
             except (ValueError, TypeError):
-                r["spacing"] = format_mm_value(raw) # fallback to regular format
+                r["spacing"] = format_mm_value(raw)
 
     return records
 
