@@ -39,7 +39,6 @@ def wait_for_translation(token, urn, max_wait_minutes=15):
 
         elif status == "failed":
             print(f"   ❌ Translation FAILED")
-            # Print error details if available
             for derivative in data.get("derivatives", []):
                 for msg in derivative.get("messages", []):
                     print(f"      Error: {msg.get('message', '')}")
