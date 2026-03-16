@@ -1,0 +1,304 @@
+=================================================================
+SECTION 1 — REBAR BARS: Host Category + Object ID
+=================================================================
+[3972] Rebar Bar [435914]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[3973] Rebar Bar [437558]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3974] Rebar Bar [437599]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3975] Rebar Bar [437788]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[3976] Rebar Bar [438247]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[3977] Rebar Bar [438255]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[3978] Rebar Bar [438287]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3979] Rebar Bar [438288]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3980] Rebar Bar [438302]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3981] Rebar Bar [438303]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3982] Rebar Bar [438315]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3983] Rebar Bar [438316]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3984] Rebar Bar [438358]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3985] Rebar Bar [438688]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3986] Rebar Bar [439792]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3987] Rebar Bar [439820]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3988] Rebar Bar [440259]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3989] Rebar Bar [440261]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3990] Rebar Bar [440343]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3991] Rebar Bar [440374]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3992] Rebar Bar [440376]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3993] Rebar Bar [440486]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3994] Rebar Bar [441001]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3995] Rebar Bar [441003]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3996] Rebar Bar [441004]
+    Host Category = 'Structural Framing'
+    Host Mark     = ''
+[3997] Rebar Bar [442754]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[3998] Rebar Bar [442755]
+    Host Category = 'Structural Foundation'
+    Host Mark     = ''
+[4000] Rebar Bar [435942]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4001] Rebar Bar [436401]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4002] Rebar Bar [436429]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4003] Rebar Bar [436430]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4004] Rebar Bar [437790]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4005] Rebar Bar [437791]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4006] Rebar Bar [437792]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4007] Rebar Bar [437793]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4008] Rebar Bar [438249]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4009] Rebar Bar [438250]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4010] Rebar Bar [438251]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4011] Rebar Bar [438252]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4012] Rebar Bar [438257]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4013] Rebar Bar [438258]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4014] Rebar Bar [438259]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+[4015] Rebar Bar [438260]
+    Host Category = 'Structural Column'
+    Host Mark     = ''
+
+=================================================================
+SECTION 2 — HOST ELEMENTS: Name + Object ID + Dimensions
+=================================================================
+[56] Concrete-Rectangular-Column [435893]
+    'System Length' = '4000.000 mm'
+    'Volume' = '1960000000.000 mm^3'
+    'b' = '700.000 mm'
+    'h' = '700.000 mm'
+[58] Concrete-Rectangular-Column [437787]
+    'System Length' = '4000.000 mm'
+    'Volume' = '1960000000.000 mm^3'
+    'b' = '700.000 mm'
+    'h' = '700.000 mm'
+[59] Concrete-Rectangular-Column [438246]
+    'System Length' = '4000.000 mm'
+    'Volume' = '1960000000.000 mm^3'
+    'b' = '700.000 mm'
+    'h' = '700.000 mm'
+[60] Concrete-Rectangular-Column [438254]
+    'System Length' = '4000.000 mm'
+    'Volume' = '1960000000.000 mm^3'
+    'b' = '700.000 mm'
+    'h' = '700.000 mm'
+[57] Footing-Rectangular [435905]
+    'Elevation at Top' = '0.000 mm'
+    'Elevation at Bottom' = '-450.000 mm'
+    'Foundation Thickness' = '450.000 mm'
+    'Width' = '2000.000 mm'
+    'Length' = '2000.000 mm'
+[61] Footing-Rectangular [438285]
+    'Elevation at Top' = '0.000 mm'
+    'Elevation at Bottom' = '-450.000 mm'
+    'Foundation Thickness' = '450.000 mm'
+    'Width' = '2000.000 mm'
+    'Length' = '2000.000 mm'
+[62] Footing-Rectangular [438300]
+    'Elevation at Top' = '0.000 mm'
+    'Elevation at Bottom' = '-450.000 mm'
+    'Foundation Thickness' = '450.000 mm'
+    'Width' = '2000.000 mm'
+    'Length' = '2000.000 mm'
+[63] Footing-Rectangular [438313]
+    'Elevation at Top' = '0.000 mm'
+    'Elevation at Bottom' = '-450.000 mm'
+    'Foundation Thickness' = '450.000 mm'
+    'Width' = '2000.000 mm'
+    'Length' = '2000.000 mm'
+[64] Foundation Slab [441018]
+    'Slope' = '0.000 °'
+    'Perimeter' = '18000.000 mm'
+    'Area' = '20000000.000 mm^2'
+    'Volume' = '3000000000.000 mm^3'
+    'Elevation at Top' = '4000.000 mm'
+    'Elevation at Bottom' = '3850.000 mm'
+    'Width' = '4000.000 mm'
+    'Length' = '5000.000 mm'
+    'Thickness' = '150.000 mm'
+[4019] Concrete-Rectangular Beam [437725]
+    'System Length' = '4000.000 mm'
+    'Cut Length' = '4000.000 mm'
+    'Volume' = '540000000.000 mm^3'
+    'Elevation at Top' = '4000.000 mm'
+    'Elevation at Bottom' = '3400.000 mm'
+    'b' = '300.000 mm'
+    'h' = '600.000 mm'
+[4020] Concrete-Rectangular Beam [437820]
+    'System Length' = '3000.000 mm'
+    'Cut Length' = '3000.000 mm'
+    'Volume' = '405000000.000 mm^3'
+    'Elevation at Top' = '4000.000 mm'
+    'Elevation at Bottom' = '3400.000 mm'
+    'b' = '300.000 mm'
+    'h' = '600.000 mm'
+[4021] Concrete-Rectangular Beam [438100]
+    'System Length' = '3000.000 mm'
+    'Cut Length' = '3000.000 mm'
+    'Volume' = '405000000.000 mm^3'
+    'Elevation at Top' = '4000.000 mm'
+    'Elevation at Bottom' = '3400.000 mm'
+    'b' = '300.000 mm'
+    'h' = '600.000 mm'
+[4022] Concrete-Rectangular Beam [438253]
+    'System Length' = '4000.000 mm'
+    'Cut Length' = '4000.000 mm'
+    'Volume' = '540000000.000 mm^3'
+    'Elevation at Top' = '4000.000 mm'
+    'Elevation at Bottom' = '3400.000 mm'
+    'b' = '300.000 mm'
+    'h' = '600.000 mm'
+
+=================================================================
+SECTION 3 — ALL OBJECT IDs (every object in model)
+=================================================================
+[2] Level 1
+[3] Level 2
+[56] Concrete-Rectangular-Column [435893]
+[58] Concrete-Rectangular-Column [437787]
+[59] Concrete-Rectangular-Column [438246]
+[60] Concrete-Rectangular-Column [438254]
+[3962] column 700 x 700
+[3961] Concrete-Rectangular-Column
+[49] Structural Columns
+[57] Footing-Rectangular [435905]
+[61] Footing-Rectangular [438285]
+[62] Footing-Rectangular [438300]
+[63] Footing-Rectangular [438313]
+[3966] footing 2m x 2m
+[3964] Footing-Rectangular
+[64] Foundation Slab [441018]
+[4023] 150mm Foundation Slab
+[3965] Foundation Slab
+[50] Structural Foundations
+[3972] Rebar Bar [435914]
+[3973] Rebar Bar [437558]
+[3974] Rebar Bar [437599]
+[3975] Rebar Bar [437788]
+[3976] Rebar Bar [438247]
+[3977] Rebar Bar [438255]
+[3978] Rebar Bar [438287]
+[3979] Rebar Bar [438288]
+[3980] Rebar Bar [438302]
+[3981] Rebar Bar [438303]
+[3982] Rebar Bar [438315]
+[3983] Rebar Bar [438316]
+[3984] Rebar Bar [438358]
+[3985] Rebar Bar [438688]
+[3986] Rebar Bar [439792]
+[3987] Rebar Bar [439820]
+[3988] Rebar Bar [440259]
+[3989] Rebar Bar [440261]
+[3990] Rebar Bar [440343]
+[3991] Rebar Bar [440374]
+[3992] Rebar Bar [440376]
+[3993] Rebar Bar [440486]
+[3994] Rebar Bar [441001]
+[3995] Rebar Bar [441003]
+[3996] Rebar Bar [441004]
+[3997] Rebar Bar [442754]
+[3998] Rebar Bar [442755]
+[3969] H12
+[4000] Rebar Bar [435942]
+[4001] Rebar Bar [436401]
+[4002] Rebar Bar [436429]
+[4003] Rebar Bar [436430]
+[4004] Rebar Bar [437790]
+[4005] Rebar Bar [437791]
+[4006] Rebar Bar [437792]
+[4007] Rebar Bar [437793]
+[4008] Rebar Bar [438249]
+[4009] Rebar Bar [438250]
+[4010] Rebar Bar [438251]
+[4011] Rebar Bar [438252]
+[4012] Rebar Bar [438257]
+[4013] Rebar Bar [438258]
+[4014] Rebar Bar [438259]
+[4015] Rebar Bar [438260]
+[3970] 25 mm vertical
+[3968] Rebar Bar
+[51] Structural Rebar
+[4019] Concrete-Rectangular Beam [437725]
+[4020] Concrete-Rectangular Beam [437820]
+[4021] Concrete-Rectangular Beam [438100]
+[4022] Concrete-Rectangular Beam [438253]
+[4017] 4000 x 600 beam
+[4016] Concrete-Rectangular Beam
+[52] Structural Framing
+[4040] Structural Area Reinforcement [442649]
+[4038] Structural Area Reinforcement 1
+[4037] Structural Area Reinforcement
+[54] Structural Area Reinforcement
+[1] Model

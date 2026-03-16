@@ -1,0 +1,40 @@
+
+BEAM: Concrete-Rectangular Beam [437725]
+  Dimensions group:
+      'System Length'  =  '4000.000 mm'
+      'Cut Length'  =  '4000.000 mm'
+      'Volume'  =  '540000000.000 mm^3'
+      'Elevation at Top'  =  '4000.000 mm'
+      'Elevation at Bottom'  =  '3400.000 mm'
+      'b'  =  '300.000 mm'
+      'h'  =  '600.000 mm'
+
+BEAM: Concrete-Rectangular Beam [437820]
+  Dimensions group:
+      'System Length'  =  '3000.000 mm'
+      'Cut Length'  =  '3000.000 mm'
+      'Volume'  =  '405000000.000 mm^3'
+      'Elevation at Top'  =  '4000.000 mm'
+      'Elevation at Bottom'  =  '3400.000 mm'
+      'b'  =  '300.000 mm'
+      'h'  =  '600.000 mm'
+
+BEAM: Concrete-Rectangular Beam [438100]
+  Dimensions group:
+      'System Length'  =  '3000.000 mm'
+      'Cut Length'  =  '3000.000 mm'
+      'Volume'  =  '405000000.000 mm^3'
+      'Elevation at Top'  =  '4000.000 mm'
+      'Elevation at Bottom'  =  '3400.000 mm'
+      'b'  =  '300.000 mm'
+      'h'  =  '600.000 mm'
+
+BEAM: Concrete-Rectangular Beam [438253]
+  Dimensions group:
+      'System Length'  =  '4000.000 mm'
+      'Cut Length'  =  '4000.000 mm'
+      'Volume'  =  '540000000.000 mm^3'
+      'Elevation at Top'  =  '4000.000 mm'
+      'Elevation at Bottom'  =  '3400.000 mm'
+      'b'  =  '300.000 mm'
+      'h'  =  '600.000 mm'

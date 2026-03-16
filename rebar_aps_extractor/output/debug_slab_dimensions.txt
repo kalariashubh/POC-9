@@ -1,0 +1,44 @@
+
+SLAB/FOOTING: Footing-Rectangular [435905]
+  Dimensions group:
+      'Elevation at Top'  =  '0.000 mm'
+      'Elevation at Bottom'  =  '-450.000 mm'
+      'Foundation Thickness'  =  '450.000 mm'
+      'Width'  =  '2000.000 mm'
+      'Length'  =  '2000.000 mm'
+
+SLAB/FOOTING: Footing-Rectangular [438285]
+  Dimensions group:
+      'Elevation at Top'  =  '0.000 mm'
+      'Elevation at Bottom'  =  '-450.000 mm'
+      'Foundation Thickness'  =  '450.000 mm'
+      'Width'  =  '2000.000 mm'
+      'Length'  =  '2000.000 mm'
+
+SLAB/FOOTING: Footing-Rectangular [438300]
+  Dimensions group:
+      'Elevation at Top'  =  '0.000 mm'
+      'Elevation at Bottom'  =  '-450.000 mm'
+      'Foundation Thickness'  =  '450.000 mm'
+      'Width'  =  '2000.000 mm'
+      'Length'  =  '2000.000 mm'
+
+SLAB/FOOTING: Footing-Rectangular [438313]
+  Dimensions group:
+      'Elevation at Top'  =  '0.000 mm'
+      'Elevation at Bottom'  =  '-450.000 mm'
+      'Foundation Thickness'  =  '450.000 mm'
+      'Width'  =  '2000.000 mm'
+      'Length'  =  '2000.000 mm'
+
+SLAB/FOOTING: Foundation Slab [441018]
+  Dimensions group:
+      'Slope'  =  '0.000 °'
+      'Perimeter'  =  '18000.000 mm'
+      'Area'  =  '20000000.000 mm^2'
+      'Volume'  =  '3000000000.000 mm^3'
+      'Elevation at Top'  =  '4000.000 mm'
+      'Elevation at Bottom'  =  '3850.000 mm'
+      'Width'  =  '4000.000 mm'
+      'Length'  =  '5000.000 mm'
+      'Thickness'  =  '150.000 mm'
