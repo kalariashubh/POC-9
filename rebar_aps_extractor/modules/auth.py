@@ -12,7 +12,6 @@ def get_access_token():
 
     url = f"{BASE_URL}/authentication/v2/token"
 
-    # Encode credentials as Base64
     credentials = f"{CLIENT_ID}:{CLIENT_SECRET}"
     encoded = base64.b64encode(credentials.encode("utf-8")).decode("utf-8")
 
