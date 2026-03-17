@@ -104,7 +104,7 @@ python main.py
 
 ## 🔄 What Happens When You Run — Step by Step
 
-###Step 1 — Authentication###
+### Step 1 — Authentication
 The script sends your Client ID and Client Secret to Autodesk and receives a temporary access token valid for 1 hour. This is OAuth 2.0 Client Credentials (2-legged) — no browser or user login required.
 
 **Step 2 — Bucket Creation**
