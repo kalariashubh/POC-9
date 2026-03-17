@@ -4,7 +4,10 @@ import os
 import time
 import math
 from collections import defaultdict
-from config import BASE_URL, OUTPUT_JSON
+from config import BASE_URL, RVT_FILE_PATH, OUTPUT_DIR
+
+_rvt_stem  = os.path.splitext(os.path.basename(RVT_FILE_PATH))[0]
+OUTPUT_JSON = os.path.join(OUTPUT_DIR, f"{_rvt_stem}_data.json")
 
 EXACT_FIELD_MAP = {
     "type":         ("Identity Data", "Type Name"),
