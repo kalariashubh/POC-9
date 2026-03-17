@@ -18,8 +18,8 @@ from modules.bucket    import create_bucket
 from modules.upload    import upload_rvt_file
 from modules.translate import start_translation
 from modules.status    import wait_for_translation
-from modules.extract   import extract_and_save
-from config            import RVT_FILE_PATH, OUTPUT_JSON
+from modules.extract   import extract_and_save, OUTPUT_JSON
+from config            import RVT_FILE_PATH, OUTPUT_DIR
 import os, sys
 
 def main():
