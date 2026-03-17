@@ -6,9 +6,6 @@ import math
 from collections import defaultdict
 from config import BASE_URL, OUTPUT_JSON
 
-# ─────────────────────────────────────────────────────────────
-# EXACT field mapping for rebar bar properties
-# ─────────────────────────────────────────────────────────────
 EXACT_FIELD_MAP = {
     "type":         ("Identity Data", "Type Name"),
     "bar_length":   ("Dimensions",    "Length of each bar"),
@@ -118,7 +115,6 @@ def detect_host_type_from_name(name):
     """
     name_lower = name.lower()
 
-    # Check 'foundation slab' BEFORE 'foundation' to avoid partial match
     if "foundation slab" in name_lower:
         return "foundation slab"
     elif "column" in name_lower:
@@ -146,11 +142,9 @@ def build_host_lookup(all_objects):
         name      = obj.get("name", "")
         object_id = obj.get("objectid")
 
-        # Must be an actual instance with bracket ID
         if not ("[" in name and "]" in name):
             continue
 
-        # Must be a structural host element
         if not any(kw in name.lower() for kw in host_keywords):
             continue
 
@@ -162,7 +156,6 @@ def build_host_lookup(all_objects):
         if not isinstance(dims, dict):
             continue
 
-        # Get exact key names for this host type
         key_map   = HOST_DIMENSION_KEYS.get(host_type, {})
         width_key = key_map.get("width")
         depth_key = key_map.get("depth")
@@ -209,14 +202,11 @@ def build_rebar_to_host_map(all_objects, host_lookup):
       (Revit assigns sequential IDs to elements created together)
     """
 
-    # Build per-category list of (revit_instance_id, object_id) for hosts
-    # revit_instance_id = the number inside brackets e.g. 435893
     hosts_by_category = defaultdict(list)
 
     for oid, data in host_lookup.items():
         host_type = data["host_type"]
 
-        # Map our internal host_type → Revit Host Category string
         if host_type == "column":
             category = "Structural Column"
         elif host_type == "beam":
@@ -226,7 +216,6 @@ def build_rebar_to_host_map(all_objects, host_lookup):
         else:
             continue
 
-        # Extract Revit instance ID from bracket
         name = data["name"]
         try:
             revit_id = int(name.split("[")[1].split("]")[0])
@@ -242,7 +231,6 @@ def build_rebar_to_host_map(all_objects, host_lookup):
     for cat, hosts in hosts_by_category.items():
         print(f"      '{cat}': {[h['revit_id'] for h in hosts]}")
 
-    # Now map each rebar bar to its closest host in the same category
     rebar_host_map = {}
 
     for obj in all_objects:
@@ -256,13 +244,11 @@ def build_rebar_to_host_map(all_objects, host_lookup):
         identity      = props.get("Identity Data", {})
         host_category = identity.get("Host Category", "") if isinstance(identity, dict) else ""
 
-        # Extract rebar's Revit instance ID from bracket
         try:
             rebar_revit_id = int(name.split("[")[1].split("]")[0])
         except (IndexError, ValueError):
             rebar_revit_id = object_id
 
-        # Find candidate hosts in the same Revit category
         candidates = hosts_by_category.get(host_category, [])
 
         if not candidates:
@@ -270,7 +256,6 @@ def build_rebar_to_host_map(all_objects, host_lookup):
             print(f"      ⚠️  No host found for [{object_id}] {name} (category='{host_category}')")
             continue
 
-        # Match to host with closest Revit instance ID
         best = min(
             candidates,
             key=lambda h: abs(h["revit_id"] - rebar_revit_id)
@@ -383,13 +368,11 @@ def extract_rebar_records(all_objects, host_lookup, rebar_host_map):
 
         props = obj.get("properties", {})
 
-        # Extract 5 rebar fields using exact group + key
         record = {}
         for json_key, (group_name, key_name) in EXACT_FIELD_MAP.items():
             raw = extract_field(props, group_name, key_name)
             record[json_key] = clean_value(raw)
 
-        # Attach width and depth from matched host element
         host_id   = rebar_host_map.get(object_id)
         host_data = host_lookup.get(host_id, {}) if host_id else {}
 
