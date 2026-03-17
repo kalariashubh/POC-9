@@ -45,7 +45,7 @@ Clean null values + Round bar lengths + Format mm values
       ↓
 Deduplicate rows to match Revit schedule grouping
       ↓
-Save to output/rebar_data.json ✅
+Save to output/ ✅
 ```
 
 ---
