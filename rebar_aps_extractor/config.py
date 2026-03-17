@@ -6,8 +6,8 @@ CLIENT_SECRET = "IpaF6PSGItMxgLiqtbe1DiqrXqfPgGFDCjFYoisUNJzQwhlkNCElYGEMzOERBbm
 
 RVT_FILE_PATH = r"D:\Buniyad Byte\POC 9\model.rvt"
 
-OUTPUT_JSON   = r"D:\Buniyad Byte\POC 9\rebar_aps_extractor\output\rebar_data.json"
+BASE_URL      = "https://developer.api.autodesk.com"
 
-BASE_URL = "https://developer.api.autodesk.com"
+BUCKET_KEY    = "rebarextractor" + CLIENT_ID[:10].lower().replace("-", "").replace("_", "")
 
-BUCKET_KEY = "rebarextractor" + CLIENT_ID[:10].lower().replace("-", "").replace("_", "")
+OUTPUT_DIR    = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
