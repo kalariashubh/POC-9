@@ -9,7 +9,7 @@ import os, sys
 
 def main():
     print("=" * 60)
-    print("  🏗️   Revit Rebar Extractor — Autodesk APS")
+    print("           Revit Rebar Extractor — Autodesk APS")
     print("=" * 60)
     print(f"  Input:  {RVT_FILE_PATH}")
     print(f"  Output: {OUTPUT_JSON}")
