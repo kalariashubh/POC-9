@@ -67,7 +67,7 @@ rebar_aps_extractor/
 │   └── extract.py       ← Step 6: Extract rebar fields and save JSON
 │
 ├── output/
-│   └── rebar_data.json  ← Final extracted data (auto-generated)
+│   └── model_data.json  ← Final extracted data (auto-generated)
 │
 └── requirements.txt
 ```
