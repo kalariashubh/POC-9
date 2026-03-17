@@ -1,16 +1,3 @@
-"""
-Revit Rebar Schedule Extractor — APS API
-=========================================
-What it does:
-  1. Authenticates with Autodesk APS
-  2. Creates a cloud bucket
-  3. Uploads your .rvt file
-  4. Triggers Revit translation on Autodesk servers
-  5. Waits for completion
-  6. Extracts 6 rebar fields from ALL rebar elements
-  7. Saves everything to output/rebar_data.json
-"""
-
 from modules.auth      import get_access_token
 from modules.bucket    import create_bucket
 from modules.upload    import upload_rvt_file
