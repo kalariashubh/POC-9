@@ -144,39 +144,6 @@ This project applies the same ceiling rounding (always rounds UP, never down) to
 
 ---
 
-## ➕ Adding More Fields
-
-Any of the 89 fields listed under Structural Rebar in Revit's Schedule Properties can be added by editing `EXACT_FIELD_MAP` in `modules/extract.py`. Each entry maps a JSON output key to the exact Revit property group name and parameter name. No other changes are needed.
-
-Fields available to add immediately — all are standard Revit built-in Structural Rebar parameters:
-
-- `Style` — Standard or Stirrup/Tie
-- `Shape Name` — Shape code e.g. 21, 52
-- `Deformation` — Deformed or Plain
-- `Hook At Start` / `Hook At End` — Hook type name
-- `Material` — Steel grade and type
-- `Layout Rule` — Minimum Clear Spacing, Fixed Number, Single etc.
-- `Total Bar Length` — Combined length of all bars in the set
-- `Host Category` — Structural Column, Structural Framing etc.
-- `Mark` — Bar mark
-
----
-
-## 🛠️ Debug Scripts
-
-Three helper scripts are included for inspecting a new model:
-
-**`debug_rebar_only.py`**
-Dumps every property group and key-value pair for all rebar bar instances. Saves output as both `.txt` and `.json` to the `output/` folder. Use this to verify exact property names if extraction results are unexpected.
-
-**`debug_non_rebar.py`**
-Shows all objects in the model grouped by category — rebar instances, structural elements, family type definitions, category headers and system objects. Useful for understanding the full model structure.
-
-**`debug_host_matching.py`**
-Shows the exact `Host Category` value each rebar bar reports and the object IDs of all structural host elements. Use this if you need to extract width and depth from host elements (columns, beams, footings).
-
----
-
 ## ⚠️ Important Notes
 
 - Translation takes **2–10 minutes** — this is Autodesk's Revit engine running on their cloud and the time depends on model size and server load
@@ -204,38 +171,3 @@ Shows the exact `Host Category` value each rebar bar reports and the object IDs 
 | Python g Format Specifier | Remove trailing zeros from mm values cleanly |
 
 ---
-
-## ❓ FAQ
-
-**Do I need Revit installed on my machine?**
-No. The `.rvt` file is uploaded to Autodesk's cloud and processed there. Only Python and an internet connection are required.
-
-**Is the APS account free?**
-Yes. Autodesk offers a free developer tier with enough quota for this use case.
-
-**Will this work on any `.rvt` file?**
-The 5 core rebar fields will work on any `.rvt` file that contains Structural Rebar elements. The model does not need to have a Rebar Schedule view — the data is extracted directly from element properties.
-
-**What Revit versions are supported?**
-Any `.rvt` file that Autodesk's Model Derivative API can translate — currently Revit 2019 through 2026.
-
-**Why does the quantity not match what I expect?**
-Revit stores a `Quantity` value per rebar set object which represents the number of bars in that distribution. The script uses this value directly. If numbers differ from your schedule, check whether your schedule is grouped by type or showing individual rows.
-
-**Can I run this on multiple `.rvt` files?**
-Yes — change the file path in `config.py` and run `main.py` again. Each run uploads and processes the specified file independently.
-
----
-
-## 📦 Requirements
-
-- Python 3.8 or higher
-- `requests` library
-- Free Autodesk Platform Services account
-- Internet connection
-
----
-
-## 📄 License
-
-MIT License — free to use, modify and distribute.
