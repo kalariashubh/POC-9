@@ -1,4 +1,4 @@
-# 🏗️ Revit Rebar Schedule Extractor
+# Revit Rebar Schedule Extractor
 
 Extract rebar schedule data from Autodesk Revit `.rvt` files into clean JSON — **no Revit installation required, no plugins needed**.
 
