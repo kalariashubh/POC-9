@@ -1,8 +1,6 @@
 """
 Revit Rebar Schedule Extractor — APS API
 =========================================
-Just run:  python main.py
-
 What it does:
   1. Authenticates with Autodesk APS
   2. Creates a cloud bucket
