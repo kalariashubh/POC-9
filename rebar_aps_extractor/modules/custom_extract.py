@@ -4,19 +4,27 @@ import os
 import time
 import math
 from collections import defaultdict
-from config import BASE_URL, OUTPUT_JSON
+from config import BASE_URL, RVT_FILE_PATH, OUTPUT_DIR
 
+# ─────────────────────────────────────────────────────────────
+# Auto-generate output filename from input .rvt filename
+# model.rvt        → output/model_data.json
+# building_v2.rvt  → output/building_v2_data.json
+# ─────────────────────────────────────────────────────────────
+_rvt_stem   = os.path.splitext(os.path.basename(RVT_FILE_PATH))[0]
+OUTPUT_JSON = os.path.join(OUTPUT_DIR, f"{_rvt_stem}_data.json")
+
+# ─────────────────────────────────────────────────────────────
+# EXACT field mapping — Revit built-in Structural Rebar params
+# ─────────────────────────────────────────────────────────────
 EXACT_FIELD_MAP = {
     "type":         ("Identity Data", "Type Name"),
-    "bar_length":   ("Dimensions",    "Length of each bar"),
     "bar_diameter": ("Dimensions",    "Bar Diameter"),
     "spacing":      ("Rebar Set",     "Spacing"),
-    "quantity":     ("Rebar Set",     "Quantity"),
 }
 
 # ─────────────────────────────────────────────────────────────
-# EXACT Host Category strings Revit uses (from debug file)
-# mapped to our internal host type names
+# EXACT Host Category strings Revit uses
 # ─────────────────────────────────────────────────────────────
 HOST_CATEGORY_MAP = {
     "Structural Column":     "column",
@@ -26,41 +34,59 @@ HOST_CATEGORY_MAP = {
 
 # ─────────────────────────────────────────────────────────────
 # EXACT dimension keys per host element type
-# Sourced directly from debug files
 #
-# Column:           'b' = width,   'h' = depth
-# Beam:             'b' = width,   'h' = depth
-# Footing:          'Width' = width, 'Foundation Thickness' = depth
-# Foundation Slab:  'Width' = width, 'Thickness' = depth
+# Column:
+#   width  = 'b'             (cross-section width  e.g. 700mm)
+#   length = 'h'             (cross-section depth  e.g. 700mm) ← swapped
+#   depth  = 'System Length' (column height        e.g. 4000mm) ← swapped
+#
+# Beam:
+#   width  = 'b'             (beam width  e.g. 300mm)
+#   depth  = 'h'             (beam depth  e.g. 600mm)
+#   length = 'Cut Length'    (beam span   e.g. 4000mm)
+#
+# Footing:
+#   width  = 'Width'
+#   depth  = 'Foundation Thickness'
+#   length = 'Length'
+#
+# Foundation Slab:
+#   width  = 'Width'
+#   depth  = 'Thickness'
+#   length = 'Length'
 # ─────────────────────────────────────────────────────────────
 HOST_DIMENSION_KEYS = {
     "column": {
-        "width": "b",
-        "depth": "h",
+        "width":  "b",
+        "depth":  "System Length",  # column height → depth
+        "length": "h",              # cross-section depth → length
     },
     "beam": {
-        "width": "b",
-        "depth": "h",
+        "width":  "b",
+        "depth":  "h",
+        "length": "Cut Length",
     },
     "footing": {
-        "width": "Width",
-        "depth": "Foundation Thickness",
+        "width":  "Width",
+        "depth":  "Foundation Thickness",
+        "length": "Length",
     },
     "foundation slab": {
-        "width": "Width",
-        "depth": "Thickness",
+        "width":  "Width",
+        "depth":  "Thickness",
+        "length": "Length",
     },
 }
 
 # ─────────────────────────────────────────────────────────────
-# Which object name keywords identify each host type
-# Used when building the host lookup table
+# Human-readable display names for host element types
 # ─────────────────────────────────────────────────────────────
-HOST_NAME_TYPE_MAP = {
-    "column":           "column",
-    "beam":             "beam",
-    "footing":          "footing",
-    "foundation slab":  "foundation slab",
+HOST_TYPE_DISPLAY = {
+    "column":          "Column",
+    "beam":            "Beam",
+    "footing":         "Footing",
+    "foundation slab": "Foundation Slab",
+    "foundation":      "Foundation",
 }
 
 ROUNDING_INCREMENT_MM = 25
@@ -106,15 +132,9 @@ def fetch_all_properties(token, urn, guid):
 def detect_host_type_from_name(name):
     """
     Detect host element type from its object name.
-    Uses exact substring matching in order of specificity.
-
-    'Concrete-Rectangular-Column [435893]' → 'column'
-    'Concrete-Rectangular Beam [437725]'   → 'beam'
-    'Footing-Rectangular [435905]'         → 'footing'
-    'Foundation Slab [441018]'             → 'foundation slab'
+    Checks 'foundation slab' BEFORE 'foundation' to avoid partial match.
     """
     name_lower = name.lower()
-
     if "foundation slab" in name_lower:
         return "foundation slab"
     elif "column" in name_lower:
@@ -130,10 +150,13 @@ def detect_host_type_from_name(name):
 
 def build_host_lookup(all_objects):
     """
-    Build a lookup: object_id → { width, depth, host_type, name }
+    Build a lookup: object_id → { width, depth, length, host_type, host_element, name }
 
-    Only indexes actual instances (have bracket IDs like [435893]).
-    Uses exact dimension key names per host type from debug files.
+    Column swap applied here:
+      'depth'  = System Length (column height e.g. 4000mm)
+      'length' = h             (cross-section e.g. 700mm)
+
+    Beam uses Cut Length for the span value.
     """
     host_lookup   = {}
     host_keywords = ["column", "beam", "foundation", "slab", "footing"]
@@ -144,7 +167,6 @@ def build_host_lookup(all_objects):
 
         if not ("[" in name and "]" in name):
             continue
-
         if not any(kw in name.lower() for kw in host_keywords):
             continue
 
@@ -156,52 +178,50 @@ def build_host_lookup(all_objects):
         if not isinstance(dims, dict):
             continue
 
-        key_map   = HOST_DIMENSION_KEYS.get(host_type, {})
-        width_key = key_map.get("width")
-        depth_key = key_map.get("depth")
+        key_map    = HOST_DIMENSION_KEYS.get(host_type, {})
+        width_key  = key_map.get("width")
+        depth_key  = key_map.get("depth")
+        length_key = key_map.get("length")
 
-        width_raw = dims.get(width_key) if width_key else None
-        depth_raw = dims.get(depth_key) if depth_key else None
+        width_raw  = dims.get(width_key)  if width_key  else None
+        depth_raw  = dims.get(depth_key)  if depth_key  else None
+        length_raw = dims.get(length_key) if length_key else None
 
-        width_clean = format_mm_value(clean_value(str(width_raw))) if width_raw else None
-        depth_clean = format_mm_value(clean_value(str(depth_raw))) if depth_raw else None
+        width_clean  = format_mm_value(clean_value(str(width_raw)))  if width_raw  else None
+        depth_clean  = format_mm_value(clean_value(str(depth_raw)))  if depth_raw  else None
+        length_clean = format_mm_value(clean_value(str(length_raw))) if length_raw else None
+
+        host_element = HOST_TYPE_DISPLAY.get(host_type, host_type.title())
 
         host_lookup[object_id] = {
-            "name":      name,
-            "host_type": host_type,
-            "width":     width_clean,
-            "depth":     depth_clean,
+            "name":         name,
+            "host_type":    host_type,
+            "host_element": host_element,
+            "width":        width_clean,
+            "depth":        depth_clean,
+            "length":       length_clean,
         }
 
     print(f"\n   Host elements indexed: {len(host_lookup)}")
     for oid, data in host_lookup.items():
         print(f"      [{oid}] {data['name']}")
-        print(f"             type={data['host_type']}, width={data['width']}, depth={data['depth']}")
+        print(f"             type={data['host_type']}, width={data['width']}, depth={data['depth']}, length={data['length']}")
 
     return host_lookup
 
 
 def build_rebar_to_host_map(all_objects, host_lookup):
     """
-    Map each rebar bar object_id → its host element object_id.
+    Map each rebar bar object_id → LIST of all host element object_ids
+    in the same category.
 
-    Uses Revit's EXACT 'Host Category' string from Identity Data:
-      'Structural Column'     → match to column host elements
-      'Structural Framing'    → match to beam host elements
-      'Structural Foundation' → match to footing/foundation host elements
+    For beams: rebar is mapped to ALL beams in the model so that
+    every unique beam length appears in the output — not just the
+    closest one. This ensures 3000mm and 4000mm both appear.
 
-    Matching strategy:
-      Extract the Revit instance ID from the bracket in the rebar name
-      e.g. 'Rebar Bar [435914]' → instance_id = 435914
-
-      Extract Revit instance IDs from host element names
-      e.g. 'Concrete-Rectangular-Column [435893]' → instance_id = 435893
-
-      Match rebar to the host element whose Revit instance ID is
-      closest to the rebar's Revit instance ID within the same category.
-      (Revit assigns sequential IDs to elements created together)
+    For columns and foundations: standard closest-ID matching is used
+    since columns all have the same dimensions in this model.
     """
-
     hosts_by_category = defaultdict(list)
 
     for oid, data in host_lookup.items():
@@ -223,8 +243,8 @@ def build_rebar_to_host_map(all_objects, host_lookup):
             revit_id = oid
 
         hosts_by_category[category].append({
-            "object_id":   oid,
-            "revit_id":    revit_id,
+            "object_id": oid,
+            "revit_id":  revit_id,
         })
 
     print(f"\n   Host category groups:")
@@ -252,16 +272,30 @@ def build_rebar_to_host_map(all_objects, host_lookup):
         candidates = hosts_by_category.get(host_category, [])
 
         if not candidates:
-            rebar_host_map[object_id] = None
+            rebar_host_map[object_id] = {
+                "type":     "single",
+                "host_ids": []
+            }
             print(f"      ⚠️  No host found for [{object_id}] {name} (category='{host_category}')")
             continue
 
-        best = min(
-            candidates,
-            key=lambda h: abs(h["revit_id"] - rebar_revit_id)
-        )
+        # ── Beam: map to ALL beam hosts so every unique length appears ──
+        if host_category == "Structural Framing":
+            rebar_host_map[object_id] = {
+                "type":     "all",
+                "host_ids": [h["object_id"] for h in candidates]
+            }
 
-        rebar_host_map[object_id] = best["object_id"]
+        # ── Column/Foundation: closest ID matching ──
+        else:
+            best = min(
+                candidates,
+                key=lambda h: abs(h["revit_id"] - rebar_revit_id)
+            )
+            rebar_host_map[object_id] = {
+                "type":     "single",
+                "host_ids": [best["object_id"]]
+            }
 
     return rebar_host_map
 
@@ -303,10 +337,6 @@ def format_mm_value(val):
 
 
 def clean_value(val):
-    """
-    Convert empty/invalid values to None.
-    Spacing 0.000 mm = Single bar, no distribution → None.
-    """
     if val is None:
         return None
     s = str(val).strip()
@@ -317,43 +347,46 @@ def clean_value(val):
     return s
 
 
-def round_to_nearest(value_mm, increment=ROUNDING_INCREMENT_MM):
-    return math.ceil(value_mm / increment) * increment
-
-
-def apply_rounding_to_records(records):
-    """Round bar_length up to nearest 25mm — matches Revit schedule."""
-    for r in records:
-        val = r.get("bar_length")
-        if val is None:
-            continue
-        try:
-            numeric = float(str(val).replace("mm", "").strip())
-            rounded = round_to_nearest(numeric, ROUNDING_INCREMENT_MM)
-            r["bar_length"] = f"{rounded} mm"
-        except (ValueError, TypeError):
-            pass
-    return records
-
-
 def format_all_mm_fields(records):
-    """Remove .000 from bar_diameter and spacing."""
+    """
+    bar_diameter → remove trailing zeros  '12.000 mm' → '12 mm'
+    spacing      → round to nearest whole mm  '280.571 mm' → '281 mm'
+    """
     for r in records:
         if r.get("bar_diameter") is not None:
             r["bar_diameter"] = format_mm_value(r["bar_diameter"])
+
         if r.get("spacing") is not None:
-            r["spacing"] = format_mm_value(r["spacing"])
+            raw = r["spacing"]
+            try:
+                numeric_str = str(raw).replace("mm", "").strip()
+                numeric     = float(numeric_str)
+                rounded     = round(numeric)
+                r["spacing"] = f"{rounded} mm"
+            except (ValueError, TypeError):
+                r["spacing"] = format_mm_value(raw)
+
     return records
 
 
 def extract_rebar_records(all_objects, host_lookup, rebar_host_map):
     """
-    Filter actual rebar bar instances, extract 5 rebar fields,
-    and attach width + depth from the matched host element.
+    Filter actual rebar bar instances, extract 3 rebar fields,
+    attach host dimensions.
+
+    Beam logic:
+    - Beam rebar with null spacing → skip entirely
+    - Beam rebar with spacing → expand into one record per unique
+      beam length so that ALL beam lengths appear in output
+      (e.g. both 3000mm and 4000mm beams get a record)
+
+    Column/Foundation logic:
+    - Standard single host match
     """
     rebar_records     = []
     skipped           = 0
     type_rows_skipped = 0
+    beam_null_skipped = 0
 
     for obj in all_objects:
         name      = obj.get("name", "")
@@ -368,30 +401,66 @@ def extract_rebar_records(all_objects, host_lookup, rebar_host_map):
 
         props = obj.get("properties", {})
 
-        record = {}
+        # Extract 3 rebar fields
+        record_base = {}
         for json_key, (group_name, key_name) in EXACT_FIELD_MAP.items():
             raw = extract_field(props, group_name, key_name)
-            record[json_key] = clean_value(raw)
+            record_base[json_key] = clean_value(raw)
 
-        host_id   = rebar_host_map.get(object_id)
-        host_data = host_lookup.get(host_id, {}) if host_id else {}
+        # Get host mapping info
+        host_info = rebar_host_map.get(object_id, {"type": "single", "host_ids": []})
+        host_ids  = host_info.get("host_ids", [])
+        map_type  = host_info.get("type", "single")
 
-        record["width"] = host_data.get("width")
-        record["depth"] = host_data.get("depth")
+        # ── Beam logic ───────────────────────────────────────────
+        if map_type == "all":
+            # Skip beam bars with no spacing
+            if record_base.get("spacing") is None:
+                beam_null_skipped += 1
+                continue
 
-        rebar_records.append(record)
+            # Expand into one record per unique beam length
+            seen_lengths = set()
+            for host_id in host_ids:
+                host_data = host_lookup.get(host_id, {})
+                beam_len  = host_data.get("length")
 
-    print(f"\n   Rebar bar instances found:  {len(rebar_records)}")
-    print(f"   Family type rows skipped:   {type_rows_skipped}")
-    print(f"   Other elements skipped:     {skipped}")
+                # Only add each unique beam length once
+                if beam_len in seen_lengths:
+                    continue
+                seen_lengths.add(beam_len)
+
+                record = dict(record_base)
+                record["host_element"] = host_data.get("host_element")
+                record["width"]        = host_data.get("width")
+                record["depth"]        = host_data.get("depth")
+                record["length"]       = beam_len
+                rebar_records.append(record)
+
+        # ── Column / Foundation logic ─────────────────────────────
+        else:
+            host_id   = host_ids[0] if host_ids else None
+            host_data = host_lookup.get(host_id, {}) if host_id else {}
+
+            record = dict(record_base)
+            record["host_element"] = host_data.get("host_element")
+            record["width"]        = host_data.get("width")
+            record["depth"]        = host_data.get("depth")
+            record["length"]       = host_data.get("length")
+            rebar_records.append(record)
+
+    print(f"\n   Rebar records generated:        {len(rebar_records)}")
+    print(f"   Beam bars (no spacing) skipped: {beam_null_skipped}")
+    print(f"   Family type rows skipped:       {type_rows_skipped}")
+    print(f"   Other elements skipped:         {skipped}")
     return rebar_records
 
 
 def group_records(records):
     """
-    Deduplicate bars sharing same property combination.
-    Key = type + bar_length + bar_diameter + spacing + width + depth
-    Uses Revit's own Quantity value for each unique group.
+    Deduplicate records sharing same property combination.
+    Key = type + bar_diameter + spacing + host_element + width + depth + length
+    Preserves original order (first occurrence kept).
     """
     seen         = {}
     ordered_keys = []
@@ -399,21 +468,22 @@ def group_records(records):
     for r in records:
         key = (
             r.get("type")         or "",
-            r.get("bar_length")   or "",
             r.get("bar_diameter") or "",
             r.get("spacing")      or "",
+            r.get("host_element") or "",
             r.get("width")        or "",
             r.get("depth")        or "",
+            r.get("length")       or "",
         )
         if key not in seen:
             seen[key] = {
                 "type":         r.get("type"),
-                "bar_length":   r.get("bar_length"),
                 "bar_diameter": r.get("bar_diameter"),
                 "spacing":      r.get("spacing"),
+                "host_element": r.get("host_element"),
                 "width":        r.get("width"),
                 "depth":        r.get("depth"),
-                "quantity":     r.get("quantity"),
+                "length":       r.get("length"),
             }
             ordered_keys.append(key)
 
@@ -428,6 +498,7 @@ def print_preview(records, count=3):
 
 def extract_and_save(token, urn):
     print(f"\n🔍 [EXTRACT] Extracting rebar schedule data...")
+    print(f"   Output will be saved as: {os.path.basename(OUTPUT_JSON)}")
 
     # Step 1 — Get model view GUID
     guid = get_model_guid(token, urn)
@@ -435,32 +506,31 @@ def extract_and_save(token, urn):
     # Step 2 — Fetch all object properties
     all_objects = fetch_all_properties(token, urn, guid)
 
-    # Step 3 — Build host element lookup with exact dimension keys
+    # Step 3 — Build host element lookup
     print(f"\n   🏗️  Building host element lookup...")
     host_lookup    = build_host_lookup(all_objects)
     rebar_host_map = build_rebar_to_host_map(all_objects, host_lookup)
 
-    # Step 4 — Filter rebar instances, extract fields + host dimensions
+    # Step 4 — Extract rebar records
+    #           Beams: expanded per unique length, null-spacing skipped
+    #           Columns/Foundations: single closest match
     raw_records = extract_rebar_records(all_objects, host_lookup, rebar_host_map)
 
     if not raw_records:
         print("\n   ⚠️  No rebar elements found!")
         return []
 
-    # Step 5 — Round bar_length to nearest 25mm
-    rounded_records = apply_rounding_to_records(raw_records)
+    # Step 5 — Format bar_diameter and spacing
+    formatted_records = format_all_mm_fields(raw_records)
 
-    # Step 6 — Remove .000 from bar_diameter and spacing
-    formatted_records = format_all_mm_fields(rounded_records)
-
-    # Step 7 — Deduplicate by unique property combination
+    # Step 6 — Deduplicate by unique property combination
     final_records = group_records(formatted_records)
 
-    print(f"\n   Raw bar instances:    {len(raw_records)}")
-    print(f"   Unique schedule rows: {len(final_records)}")
+    print(f"\n   Raw records:          {len(raw_records)}")
+    print(f"   Unique final records: {len(final_records)}")
 
-    # Step 8 — Save JSON
-    os.makedirs(os.path.dirname(OUTPUT_JSON), exist_ok=True)
+    # Step 7 — Save JSON
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
         json.dump(final_records, f, indent=2, ensure_ascii=False)
 
