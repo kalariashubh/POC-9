@@ -1,101 +1,83 @@
 [
   {
     "type": "H12",
-    "bar_length": "2825 mm",
     "bar_diameter": "12 mm",
     "spacing": "200 mm",
+    "host_element": "Column",
     "width": "700 mm",
-    "depth": "700 mm",
-    "quantity": "19"
+    "depth": "4000 mm",
+    "length": "700 mm"
   },
   {
     "type": "H12",
-    "bar_length": "2675 mm",
     "bar_diameter": "12 mm",
     "spacing": "150 mm",
+    "host_element": "Footing",
     "width": "2000 mm",
     "depth": "450 mm",
-    "quantity": "12"
+    "length": "2000 mm"
   },
   {
     "type": "H12",
-    "bar_length": "6100 mm",
-    "bar_diameter": "12 mm",
-    "spacing": null,
-    "width": "300 mm",
-    "depth": "600 mm",
-    "quantity": "5"
-  },
-  {
-    "type": "H12",
-    "bar_length": "6375 mm",
-    "bar_diameter": "12 mm",
-    "spacing": null,
-    "width": "300 mm",
-    "depth": "600 mm",
-    "quantity": "5"
-  },
-  {
-    "type": "H12",
-    "bar_length": "2050 mm",
-    "bar_diameter": "12 mm",
-    "spacing": null,
-    "width": "300 mm",
-    "depth": "600 mm",
-    "quantity": "1"
-  },
-  {
-    "type": "H12",
-    "bar_length": "1500 mm",
     "bar_diameter": "12 mm",
     "spacing": "250 mm",
+    "host_element": "Beam",
     "width": "300 mm",
     "depth": "600 mm",
-    "quantity": "16"
+    "length": "4000 mm"
   },
   {
     "type": "H12",
-    "bar_length": "5375 mm",
     "bar_diameter": "12 mm",
-    "spacing": null,
+    "spacing": "250 mm",
+    "host_element": "Beam",
     "width": "300 mm",
     "depth": "600 mm",
-    "quantity": "5"
+    "length": "3000 mm"
   },
   {
     "type": "H12",
-    "bar_length": "1500 mm",
     "bar_diameter": "12 mm",
     "spacing": "150 mm",
+    "host_element": "Beam",
     "width": "300 mm",
     "depth": "600 mm",
-    "quantity": "19"
+    "length": "4000 mm"
   },
   {
     "type": "H12",
-    "bar_length": "4950 mm",
     "bar_diameter": "12 mm",
-    "spacing": "280.571 mm",
-    "width": "4000 mm",
-    "depth": "150 mm",
-    "quantity": "15"
+    "spacing": "150 mm",
+    "host_element": "Beam",
+    "width": "300 mm",
+    "depth": "600 mm",
+    "length": "3000 mm"
   },
   {
     "type": "H12",
-    "bar_length": "3950 mm",
     "bar_diameter": "12 mm",
-    "spacing": "289.882 mm",
+    "spacing": "281 mm",
+    "host_element": "Foundation Slab",
     "width": "4000 mm",
     "depth": "150 mm",
-    "quantity": "18"
+    "length": "5000 mm"
+  },
+  {
+    "type": "H12",
+    "bar_diameter": "12 mm",
+    "spacing": "290 mm",
+    "host_element": "Foundation Slab",
+    "width": "4000 mm",
+    "depth": "150 mm",
+    "length": "5000 mm"
   },
   {
     "type": "25 mm vertical",
-    "bar_length": "4675 mm",
     "bar_diameter": "25 mm",
     "spacing": null,
+    "host_element": "Column",
     "width": "700 mm",
-    "depth": "700 mm",
-    "quantity": "1"
+    "depth": "4000 mm",
+    "length": "700 mm"
   }
 ]
