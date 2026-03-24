@@ -6,7 +6,6 @@ import os
 from collections import defaultdict
 from config import BASE_URL, CLIENT_ID, CLIENT_SECRET, BUCKET_KEY, RVT_FILE_PATH
 
-
 def get_token():
     url = f"{BASE_URL}/authentication/v2/token"
     creds = base64.b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode()
