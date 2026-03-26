@@ -1,0 +1,110 @@
+[
+  {
+    "type": "New Rebar 12",
+    "bar_diameter": "12 mm",
+    "spacing": "150 mm",
+    "host_element": "Footing",
+    "width": "1500 mm",
+    "depth": "500 mm",
+    "length": "1500 mm"
+  },
+  {
+    "type": "New Rebar 12",
+    "bar_diameter": "12 mm",
+    "spacing": "200 mm",
+    "host_element": "Beam",
+    "width": "300 mm",
+    "depth": "550 mm",
+    "length": "5000 mm"
+  },
+  {
+    "type": "New Rebar 12",
+    "bar_diameter": "12 mm",
+    "spacing": "150 mm",
+    "host_element": "Beam",
+    "width": "300 mm",
+    "depth": "550 mm",
+    "length": "5000 mm"
+  },
+  {
+    "type": "New Rebar 12",
+    "bar_diameter": "12 mm",
+    "spacing": "287 mm",
+    "host_element": "Foundation Slab",
+    "width": "6000 mm",
+    "depth": "200 mm",
+    "length": "3700 mm"
+  },
+  {
+    "type": "New Rebar 12",
+    "bar_diameter": "12 mm",
+    "spacing": "296 mm",
+    "host_element": "Foundation Slab",
+    "width": "6000 mm",
+    "depth": "200 mm",
+    "length": "3700 mm"
+  },
+  {
+    "type": "New Rebar 12",
+    "bar_diameter": "12 mm",
+    "spacing": "191 mm",
+    "host_element": "Foundation Slab",
+    "width": "6000 mm",
+    "depth": "200 mm",
+    "length": "3700 mm"
+  },
+  {
+    "type": "New Rebar 12",
+    "bar_diameter": "12 mm",
+    "spacing": "148 mm",
+    "host_element": "Foundation Slab",
+    "width": "6000 mm",
+    "depth": "200 mm",
+    "length": "3700 mm"
+  },
+  {
+    "type": "New Rebar 25",
+    "bar_diameter": "25 mm",
+    "spacing": "150 mm",
+    "host_element": "Column",
+    "width": "500 mm",
+    "depth": "6000 mm",
+    "length": "500 mm"
+  },
+  {
+    "type": "New Rebar 25",
+    "bar_diameter": "25 mm",
+    "spacing": null,
+    "host_element": "Column",
+    "width": "500 mm",
+    "depth": "6000 mm",
+    "length": "500 mm"
+  },
+  {
+    "type": "New Rebar 25",
+    "bar_diameter": "25 mm",
+    "spacing": "200 mm",
+    "host_element": "Beam",
+    "width": "300 mm",
+    "depth": "550 mm",
+    "length": "5000 mm"
+  },
+  {
+    "type": "New Rebar 8",
+    "bar_diameter": "8 mm",
+    "spacing": "100 mm",
+    "host_element": "Column",
+    "width": "500 mm",
+    "depth": "6000 mm",
+    "length": "500 mm"
+  },
+  {
+    "type": "New Rebar 8",
+    "bar_diameter": "8 mm",
+    "spacing": "200 mm",
+    "host_element": "Beam",
+    "width": "300 mm",
+    "depth": "550 mm",
+    "length": "5000 mm"
+  }
+]

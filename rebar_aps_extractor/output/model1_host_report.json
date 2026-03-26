@@ -1,0 +1,143 @@
+{
+  "model_file": "model1.rvt",
+  "host_types": {
+    "column": {
+      "sample": "Concrete-Rectangular-Column [435893]",
+      "fields": {
+        "width": {
+          "detected_key": "b",
+          "default_key": "b",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "700.000 mm"
+        },
+        "depth": {
+          "detected_key": "System Length",
+          "default_key": "System Length",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "4000.000 mm"
+        },
+        "length": {
+          "detected_key": "h",
+          "default_key": "h",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "700.000 mm"
+        }
+      },
+      "effective_config": {
+        "width": "b",
+        "depth": "System Length",
+        "length": "h"
+      },
+      "auto_fixed": false
+    },
+    "footing": {
+      "sample": "Footing-Rectangular [435905]",
+      "fields": {
+        "width": {
+          "detected_key": "Width",
+          "default_key": "Width",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "2000.000 mm"
+        },
+        "depth": {
+          "detected_key": "Foundation Thickness",
+          "default_key": "Foundation Thickness",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "450.000 mm"
+        },
+        "length": {
+          "detected_key": "Length",
+          "default_key": "Length",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "2000.000 mm"
+        }
+      },
+      "effective_config": {
+        "width": "Width",
+        "depth": "Foundation Thickness",
+        "length": "Length"
+      },
+      "auto_fixed": false
+    },
+    "foundation slab": {
+      "sample": "Foundation Slab [441018]",
+      "fields": {
+        "width": {
+          "detected_key": "Width",
+          "default_key": "Width",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "4000.000 mm"
+        },
+        "depth": {
+          "detected_key": "Thickness",
+          "default_key": "Thickness",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "150.000 mm"
+        },
+        "length": {
+          "detected_key": "Length",
+          "default_key": "Length",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "5000.000 mm"
+        }
+      },
+      "effective_config": {
+        "width": "Width",
+        "depth": "Thickness",
+        "length": "Length"
+      },
+      "auto_fixed": false
+    },
+    "beam": {
+      "sample": "Concrete-Rectangular Beam [437725]",
+      "fields": {
+        "width": {
+          "detected_key": "b",
+          "default_key": "b",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "300.000 mm"
+        },
+        "depth": {
+          "detected_key": "h",
+          "default_key": "h",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "600.000 mm"
+        },
+        "length": {
+          "detected_key": "Cut Length",
+          "default_key": "Cut Length",
+          "status": "✅ MATCHES DEFAULT",
+          "value": "4000.000 mm"
+        }
+      },
+      "effective_config": {
+        "width": "b",
+        "depth": "h",
+        "length": "Cut Length"
+      },
+      "auto_fixed": false
+    }
+  },
+  "effective_config": {
+    "column": {
+      "width": "b",
+      "depth": "System Length",
+      "length": "h"
+    },
+    "footing": {
+      "width": "Width",
+      "depth": "Foundation Thickness",
+      "length": "Length"
+    },
+    "foundation slab": {
+      "width": "Width",
+      "depth": "Thickness",
+      "length": "Length"
+    },
+    "beam": {
+      "width": "b",
+      "depth": "h",
+      "length": "Cut Length"
+    }
+  }
+}

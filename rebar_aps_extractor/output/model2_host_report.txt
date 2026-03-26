@@ -1,0 +1,128 @@
+=================================================================
+HOST DIMENSION AUTO-DETECTION REPORT
+Model: model2.rvt
+=================================================================
+
+─────────────────────────────────────────────────────────────────
+HOST TYPE: FOOTING
+Sample:    Footing-Rectangular [432181]
+
+All available dimension keys:
+   'Elevation at Bottom'  =  '-500.000 mm' (excluded)
+   'Elevation at Top'  =  '0.000 mm' (excluded)
+   'Foundation Thickness'  =  '500.000 mm'
+   'Length'  =  '1500.000 mm'
+   'Width'  =  '1500.000 mm'
+
+Detection result:
+   width    → detected='Width'  default='Width'  ✅ MATCHES DEFAULT
+            value='1500.000 mm'
+   depth    → detected='Foundation Thickness'  default='Foundation Thickness'  ✅ MATCHES DEFAULT
+            value='500.000 mm'
+   length   → detected='Length'  default='Length'  ✅ MATCHES DEFAULT
+            value='1500.000 mm'
+
+   ✅ Default config is correct for this host type
+
+─────────────────────────────────────────────────────────────────
+HOST TYPE: FOUNDATION SLAB
+Sample:    Foundation Slab [434154]
+
+All available dimension keys:
+   'Area'  =  '22.000 m^2' (excluded)
+   'Elevation at Bottom'  =  '2800.000 mm' (excluded)
+   'Elevation at Top'  =  '3000.000 mm' (excluded)
+   'Length'  =  '3800.000 mm'
+   'Perimeter'  =  '19600.000 mm' (excluded)
+   'Slope'  =  '0.000 °' (excluded)
+   'Thickness'  =  '200.000 mm'
+   'Volume'  =  '4.400 m^3' (excluded)
+   'Width'  =  '6000.000 mm'
+
+Detection result:
+   width    → detected='Width'  default='Width'  ✅ MATCHES DEFAULT
+            value='6000.000 mm'
+   depth    → detected='Thickness'  default='Thickness'  ✅ MATCHES DEFAULT
+            value='200.000 mm'
+   length   → detected='Length'  default='Length'  ✅ MATCHES DEFAULT
+            value='3800.000 mm'
+
+   ✅ Default config is correct for this host type
+
+─────────────────────────────────────────────────────────────────
+HOST TYPE: COLUMN
+Sample:    Concrete-Rectangular-Column [432335]
+
+All available dimension keys:
+   'Volume'  =  '1.500 m^3' (excluded)
+   '[Constraints] Base Level'  =  'Level 1'
+   '[Constraints] Base Offset'  =  '0.000 mm' (excluded)
+   '[Constraints] Column Style'  =  'Vertical'
+   '[Constraints] Moves With Grids'  =  'Yes'
+   '[Constraints] Room Bounding'  =  'Yes'
+   '[Constraints] Top Level'  =  'Level 3'
+   '[Constraints] Top Offset'  =  '0.000 mm' (excluded)
+   'b'  =  '500.000 mm'
+   'h'  =  '500.000 mm'
+
+Detection result:
+   width    → detected='b'  default='b'  ✅ MATCHES DEFAULT
+            value='500.000 mm'
+   depth    → detected='System Length'  default='System Length'  ⚠️  NOT IN DIMENSIONS — computed at runtime from Constraints/Levels
+            value='—'
+   length   → detected='h'  default='h'  ✅ MATCHES DEFAULT
+            value='500.000 mm'
+
+   ✅ Default config is correct for this host type
+
+─────────────────────────────────────────────────────────────────
+HOST TYPE: BEAM
+Sample:    Concrete-Rectangular Beam [433503]
+
+All available dimension keys:
+   'Elevation at Bottom'  =  '2450.000 mm' (excluded)
+   'Elevation at Top'  =  '3000.000 mm' (excluded)
+   'Length'  =  '5000.000 mm'
+   'Volume'  =  '0.525 m^3' (excluded)
+   'b'  =  '300.000 mm'
+   'h'  =  '550.000 mm'
+
+Detection result:
+   width    → detected='b'  default='b'  ✅ MATCHES DEFAULT
+            value='300.000 mm'
+   depth    → detected='h'  default='h'  ✅ MATCHES DEFAULT
+            value='550.000 mm'
+   length   → detected='Length'  default='Cut Length'  🔄 AUTO-FIXED
+            value='5000.000 mm'
+
+   ⚡ Keys were auto-fixed for this host type
+
+=================================================================
+FINAL EFFECTIVE CONFIG
+=================================================================
+
+HOST_DIMENSION_KEYS = {
+    "footing": {
+        "width": "Width",
+        "depth": "Foundation Thickness",
+        "length": "Length",
+    },
+    "foundation slab": {
+        "width": "Width",
+        "depth": "Thickness",
+        "length": "Length",
+    },
+    "column": {
+        "width": "b",
+        "depth": "System Length",
+        "length": "h",
+    },
+    "beam": {
+        "width": "b",
+        "depth": "h",
+        "length": "Length",
+    },
+}
+
+NOTE: Column depth computed from Constraints/Level elevations
+at runtime using 5-method fallback chain.
